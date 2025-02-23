@@ -76,6 +76,16 @@ jobs:
       run: |
         mkdir -p $HOME/.kube
         echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+        export KUBECONFIG=$HOME/.kube/config
+        kubectl config view
+
+    - name: Verify Kubernetes Cluster Connection
+      run: |
+        kubectl cluster-info
+
+    - name: Rollout Restart Kubernetes Deployment
+      run: |
+        kubectl rollout restart deployment/${{ steps.extract_repo_name.outputs.repo_name }}-${{ steps.extract_branch.outputs.branch }}
 
     - name: Rollout Restart Kubernetes Deployment
       run: kubectl rollout restart deployment/${{ steps.extract_repo_name.outputs.repo_name }}-${{ steps.extract_branch.outputs.branch }}
