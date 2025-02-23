@@ -15,7 +15,7 @@ COPY requirements.txt /app/requirements.txt
 
 # Install the necessary Python packages efficiently
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -r requirement.txt
+    && pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code
 COPY . /app
