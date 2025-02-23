@@ -36,7 +36,7 @@ spec:
                                         - "true"
             containers:
                 - name: kubectl-telegram-assist-main
-                  image: reg.bea.sh/behnambagheri/network-rescue:main
+                  image: reg.bea.sh/behnambagheri/kubectl-telegram-assist:main
                   imagePullPolicy: Always
                   ports:
                       - containerPort: 80
