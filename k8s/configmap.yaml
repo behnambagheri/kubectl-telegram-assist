@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: kubectl-telegram-assist-main-config
+    namespace: kube-telegram-assist
+data:
+    USE_PROXY: "false"
+    PROXY: "http://172.16.40.113:7890"
+    USE_CUSTOM_API: "true"
+    CUSTOM_API: "https://tg.bea.sh"
+    DEBUG: "true"
+    BOT_DEBUG: "false"
