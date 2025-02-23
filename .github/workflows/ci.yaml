@@ -43,13 +43,14 @@ jobs:
     - name: Format Telegram Message
       id: format_message
       run: |
-        MESSAGE="🚀 *CI/CD Pipeline Update* 🚀%0A"
-        MESSAGE+="📌 *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})%0A"
-        MESSAGE+="🌿 *Branch:* \`${{ steps.extract_branch.outputs.branch }}\`%0A"
-        MESSAGE+="📝 *Commit Message:* \`${{ github.event.commits[0].message }}\`%0A"
-        MESSAGE+="🔗 [🔄 See Changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) | [📜 Action Logs](https://github.com/${{ github.repository }}/actions/runs/${{github.run_id}})"
-    
-        echo "MESSAGE=$MESSAGE" >> $GITHUB_ENV
+        cat <<EOF >> $GITHUB_ENV
+        MESSAGE<<EOF
+        🚀 *CI/CD Pipeline Update* 🚀
+        📌 *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})
+        🌿 *Branch:* \`${{ steps.extract_branch.outputs.branch }}\`
+        📝 *Commit Message:* \`${{ github.event.commits[0].message }}\`
+        🔗 [🔄 See Changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) | [📜 Action Logs](https://github.com/${{ github.repository }}/actions/runs/${{github.run_id}})
+        EOF
 
     - name: Send Telegram Notification
       env:
