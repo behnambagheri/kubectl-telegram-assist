@@ -22,6 +22,8 @@ jobs:
       id: extract_repo_name
       run: echo "repo_name=$(basename ${{ github.repository }})" >> $GITHUB_ENV
 
+
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
@@ -74,24 +76,15 @@ jobs:
 
     - name: Configure Kubernetes Context
       run: |
-        mkdir -p $HOME/.kube
+        mkdir $HOME/.kube
         echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
-        export KUBECONFIG=$HOME/.kube/config
-        kubectl config view
 
-    - name: Verify Kubernetes Cluster Connection
-      run: |
-        kubectl cluster-info
-
-    - name: Rollout Restart Kubernetes Deployment
-      run: |
-        kubectl rollout restart deployment/${{ steps.extract_repo_name.outputs.repo_name }}-${{ steps.extract_branch.outputs.branch }}
-
-    - name: Rollout Restart Kubernetes Deployment
+    - name: Rollout Restart
       run: kubectl rollout restart deployment/${{ steps.extract_repo_name.outputs.repo_name }}-${{ steps.extract_branch.outputs.branch }}
 
-    - name: Remove Kubeconfig for Security
+    - name: Remove Kubeconfig
       run: rm -rf $HOME/.kube
+
 
     - name: Notify on Failure
       if: failure()
