@@ -49,25 +49,25 @@ jobs:
         push: true
         tags: reg.bea.sh/${{ github.repository }}:${{ steps.extract_branch.outputs.branch }}
 
-    - name: Format Telegram Message
-      id: format_message
-      run: |
-        {
-          echo "MESSAGE<<EOF"
-          echo "🚀 *CI/CD Pipeline Update* 🚀"
-          echo "📌 *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})"
-          echo "🌿 *Branch:* \`${{ steps.extract_branch.outputs.branch }}\`"
-          echo "📝 *Commit Message:* \`${{ github.event.commits[0].message }}\`"
-          echo "🔗 [🔄 See Changes](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) | [📜 Action Logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-          echo "EOF"
-        } >> $GITHUB_ENV
+#    - name: Format Telegram Message
+#      id: format_message
+#      run: |
+#        {
+#          echo "MESSAGE<<EOF"
+#          echo "🚀 *CI/CD Pipeline Update* 🚀"
+#          echo "📌 *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})"
+#          echo "🌿 *Branch:* \`${{ steps.extract_branch.outputs.branch }}\`"
+#          echo "📝 *Commit Message:* \`${{ github.event.commits[0].message }}\`"
+#          echo "🔗 [🔄 See Changes](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) | [📜 Action Logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+#          echo "EOF"
+#        } >> $GITHUB_ENV
         
 
     - name: Send Telegram Notification
       env:
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         CHAT_ID: -1001804111897
-        TOPIC_ID: 21182
+        TOPIC_ID: 26
       run: |
         curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
           -d "chat_id=${CHAT_ID}" \
@@ -97,12 +97,14 @@ jobs:
       env:
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         CHAT_ID: -1001804111897
-        TOPIC_ID: 21182
+        TOPIC_ID: 26
       run: |
         FAILURE_MSG="❌ *CI/CD Pipeline Failed!* 🚨%0A"
         FAILURE_MSG+="📌 *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})%0A"
         FAILURE_MSG+="🌿 *Branch:* \`${{ steps.extract_branch.outputs.branch }}\`%0A"
         FAILURE_MSG+="🔗 [📜 See Logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})%0A"
+        FAILURE_MSG+="🔗 [🔄 See Changes](https://github.com/${{ github.repository }}/commit/${{ github.sha }})%0A"
+
         FAILURE_MSG+="👤 *Triggered by:* \`${{ github.actor }}\`"
 
         curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
@@ -116,12 +118,14 @@ jobs:
       env:
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         CHAT_ID: -1001804111897
-        TOPIC_ID: 21182
+        TOPIC_ID: 26
       run: |
         SUCCESS_MSG="✅ *CI/CD Pipeline Success!* 🎉%0A"
         SUCCESS_MSG+="📌 *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})%0A"
         SUCCESS_MSG+="🌿 *Branch:* \`${{ steps.extract_branch.outputs.branch }}\`%0A"
         SUCCESS_MSG+="🔗 [📜 See Logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})%0A"
+        SUCCESS_MSG+="🔗 [🔄 See Changes](https://github.com/${{ github.repository }}/commit/${{ github.sha }})%0A"
+        
 
         curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
           -d "chat_id=${CHAT_ID}" \

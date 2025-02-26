@@ -175,3 +175,4 @@ cython_debug/
 k8s/image-pull-secret.yaml
 k8s/secret.yaml
 .idea
+bot_data.db

@@ -8,5 +8,5 @@ data:
     PROXY: "http://172.16.40.113:7890"
     USE_CUSTOM_API: "true"
     CUSTOM_API: "https://tg.bea.sh"
-    DEBUG: "true"
+    DEBUG: "false"
     BOT_DEBUG: "false"
